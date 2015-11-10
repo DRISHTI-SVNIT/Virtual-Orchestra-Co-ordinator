@@ -2,10 +2,10 @@
 An image processing project to implement a software that responds to users action as in Orchestra.
 
 # Hardawre requirements :
-Atmel ATmega32
-USB-TTL
-Speakers
-Webcam
+* Atmel ATmega32
+* USB-TTL
+* Speakers
+* Webcam
 
 #Software requirements :
 MATLAB R2015b
@@ -18,11 +18,13 @@ MATLAB R2015b
 5. Open MATLAB and navigate from your MATLAB file browser to the GitHub cloned repository and open "Application.m"
 6. Replace your COM in the 7th line of code which is,
  s = serial('COMx','BaudRate',38400); where x is your COM number.
-7. Run this MATLAB script file, you will be prompted with a New or Last parameter setup; choose New if this is the first time you are running the script.
-8. Threshold the object you want to track using the slidebars. Make sure the object you are tracking has a distinct color.
-9. Calibrate the parameters unless you have a fine blob of white pixels depicting your object, Hit 'OK' then.
-10. The program will start to run now. Gestures control the playing and stopping of music while movement of object in horizontal plane decides the tempo of the song.
-11. Make a "P" to start the music. Then move the object to and fro horizontally to change tempo according to your motion. Make a "C" to stop music and "N" to close the program.
+7. Your MATLAB should have webcam support package installed, if installed type "webcamlist" and choose whichever webcam you are using by typing the name of the webcam (shown in the command window) in the 2nd line of "Application.m".
+cam = webcam('x'); where x is the name of your webcam
+8. Run this MATLAB script file, you will be prompted with a New or Last parameter setup; choose New if this is the first time you are running the script.
+9. Threshold the object you want to track using the slidebars. Make sure the object you are tracking has a distinct color.
+10. Calibrate the parameters unless you have a fine blob of white pixels depicting your object, Hit 'OK' then.
+11. The program will start to run now. Gestures control the playing and stopping of music while movement of object in horizontal plane decides the tempo of the song.
+12. Make a "P" to start the music. Then move the object to and fro horizontally to change tempo according to your motion. Make a "C" to stop music and "N" to close the program.
 
 # Practical problems in project :
 * MATLAB, which is not solely based for image-processing, lags a lot while working with the image processing algorithm.
