@@ -1,4 +1,3 @@
-cd('C:/Users/Admin/Documents/GitHub/Virtual-Orchestra-Co-ordinator/MATLAB code/');
 warning off;
 cam = webcam('Integrated Webcam');
 cam.Resolution='160x120';
