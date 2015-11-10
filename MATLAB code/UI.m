@@ -1,5 +1,4 @@
 function[thvalue,brightnessfactor,lower,upper]=UI(cam)
-    warning off;
     SE=strel('disk',3);
     SE1=strel('disk',2);
     global value flagxx brightfactor gamma1 lowerx upperx;
@@ -19,11 +18,7 @@ function[thvalue,brightnessfactor,lower,upper]=UI(cam)
         img = Showimg(editimg,value);
         img=imdilate(img,SE1);
 
-        %Perform Connected Component Analysis and filter the noises.
-        %connComp=bwconncomp(img);
-        %stats=regionprops(connComp,'Area');
         mask=img;
-        %mask(vertcat(connComp.PixelIdxList{[stats.Area]<lowerx | [stats.Area]>upperx}))=0;
         %Some morphological operations for smoothing the segmented object.
         mask=imdilate(mask,SE);
 
