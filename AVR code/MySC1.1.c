@@ -6,7 +6,7 @@
 #include "USART_32.h"
 int flag = 0, i = 0, k = 0, max = 0;
 int temp_array[10];
-
+/*learning github starting project*/
 void pwm_init()
 {
 	DDRD |= _BV(PD4);						//Setting output
@@ -44,7 +44,7 @@ void playMusic()					//8-bit tempo value
 
 
 
-				*/int song[] = {Fis4, E4, G4, E4, Fis4, D4,E4,D4,
+				*/int song[] = 			{Fis4, E4, G4, E4, Fis4, D4,E4,D4,
 								Fis4, E4, G4, E4, Fis4, D4, E4,p,
 								Fis4, E4, G4, E4, Fis4, D4, E4, D4,
 								Fis4, E4, G4, E4, Fis4, D4, E4, p,		//32 till here
