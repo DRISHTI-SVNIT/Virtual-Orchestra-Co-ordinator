@@ -1,12 +1,20 @@
+/*
+ * VOC_1.cpp
+ *
+ * Created: 21-01-2016 15:19:48
+ *  Author: Harsimar
+ */ 
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
 #include <math.h>
 #include "notes.h"
-#include "USART_32.h"
-int flag = 0, i = 0, k = 0, max = 0;
+#include "USART_128.h"
+#include "EEPROM.h"
+int flag = 0, current_song_node = 0, k = 0, max = 0,song_no=0,tempo=0;
 int temp_array[10];
-/*learning github starting project*/
+
+
 void pwm_init()
 {
 	DDRD |= _BV(PD4);						//Setting output
@@ -24,83 +32,41 @@ void startMusic()							//start data trans. with Z
 
 void playMusic()					//8-bit tempo value
 {
-				/*{c4,d4,e4,e4,e4,e4,e4,e4,e4,p,e4,e4,d4,e4,f4,e4,p,e4,e4,d4,p,d4,d4,b3,d4,c4,c4,g4
-				,g4,g4,g4,g4,g4,g4,g4,g4,g4,a4,f4,f4,f4,f4,f4,f4,e4,d4,d4,f4,e4,e4,e4,d4,e4,e4,d4
-				,e4,g4,g4,a4,f4,f4,e4,e4,e4,e4,e4,d4,d4,b3,d4,c4,c4,d4,e4,e4,e4,e4,d4,f4,e4,f4,g4
-				,g4,g4,f4,e4,d4,f4,e4,f4,e4,e4,e4,d4,d4,b3,d4,c4,c4,c4,g4,g4,g4,g4,e4,g4,g4,g4,g4
-				,g4,a4,f4,f4,f4,f4,f4,e4,d4,f4,e4,e4,g4,c4,b4,a4,b4,a4,g4,a4,c4,c4,d4,d4,e4,e4,d4,e4,f4}; */
-	
-	
-				/*{E4,E4,Fis4,A4,A4,Gis4,Fis4,E4,
-
-				E4,E4,Fis4,A4,A4,Gis4,Fis4,E4,
-
-				F# G F# E F# G F# EF#
-
-				F# E D C#
-
-				E F# F# G F# E EEE
-
-
-
-
-				*/int song[] = 			{Fis4, E4, G4, E4, Fis4, D4,E4,D4,
+				
+				int song[][62] = {	{Fis4, E4, G4, E4, Fis4, D4,E4,D4,
 								Fis4, E4, G4, E4, Fis4, D4, E4,p,
 								Fis4, E4, G4, E4, Fis4, D4, E4, D4,
 								Fis4, E4, G4, E4, Fis4, D4, E4, p,		//32 till here
 								Fis4, G4, B5, p, c5, p, B5, p,  C5, p, B5, p, C5, p, B5,		//15
-								Fis4, G4, A5, p, B5, p, A5, p, B5,p, A5,p,G4, Fis4, E4,p	//16
-				};		
-
-				/* F# E G E F# D E
-
-				F# E G E F# D E D
-
-				F# E G E F# D E}; */
+								Fis4, G4, A5, p, B5, p, A5, p, B5,p, A5,p,G4, Fis4, E4,p},	//16
 				
-	//int song[] = {c4,d4,e4,f4,g4,a4,b4,c5,p};
-		/*{
-			B3, C3, Cis3, C3,
-			B3, C3, Cis3, C3,
-
-			E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,	//9
-			E3,G3,G3,G3,p,Fis3,Fis3,Fis3,p,
-			E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,
-			E3,G3,G3,G3,p,Gis3,Fis3,Fis3,p,
-			E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,
-			E3,G3,G3,G3,p,Fis3,F3,E3,p,
-			Dis3,D3,p,B3,A3,B3,p,
-			
-			{B3,C3,Cis3,C3,					//8
-			B3,C3,Cis3,C3,
-
-			E4, G4, Dis4, D4,p, G4, A4, B4,p,
-			G4,A4,Fis4,p,Fis4,E4,Fis4,Dis4,p,
-			E4, G4, Dis4, D4,p, G4, A4, B4,p,
-			G4,A4,Fis4,p,C4,Dis4,E4,p};
-
-			EE E F#EF#
-			GG G F#EF#
-			EE E F#EF#
-			GG G F#EF#
-			BB
-			BB
-			BBABB
-		};*/
-	ICR1 = song[i];
-	i++;
+								{
+									E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,	//9
+									E3,G3,G3,G3,p,Fis3,Fis3,Fis3,p,
+									E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,
+									E3,G3,G3,G3,p,Gis3,Fis3,Fis3,p,
+									E3,Fis3,Fis3,Fis3,p,E3,E3,E3,p,
+									E3,G3,G3,G3,p,Fis3,F3,E3,p,
+									Dis3,D3,p,B3,A3,B3,p,p,p
+								}								
+								
+								};
+										
+				
+	ICR1 = song[song_no][current_song_node];
+	current_song_node++;
 }
 
 void stopMusic()					//stop data trans. with Z
 {
 		flag = 0;
 		ICR1 = 0;
-		i = 0;
+		current_song_node = 0;
 }
 
 ISR(USART_RXC_vect)
 {
-	int tempo = (int)USART_Receive();
+	tempo = (int)USART_Receive(0);
 	if(k<8)
 	{
 		temp_array[k] = tempo;
@@ -124,8 +90,10 @@ ISR(USART_RXC_vect)
 		stopMusic();
 	if(flag)
 	{
-		if(i==62)
-			i=0;
+		if(current_song_node==62)
+			{current_song_node=0;
+			song_no++;
+			}			
 		playMusic();
 		for(int j=130;j>max;j--)
 		{
@@ -138,21 +106,31 @@ ISR(USART_RXC_vect)
 			if(UDR!=200)
 			dummy = UDR;
 		}
-		//USART_Transmitchar('202');
+		//USART_Transmitchar('202',0);
 		//ICR1 = 0;
 	}
 	//USART_TransmitNumber(max);
 	//USART_Transmitchar(0x0d);
 }
 
-void main(void)
+int main()
 {
 	sei();
 	pwm_init();
-	USART_Init(12);
-	USART_InterruptEnable();
+	USART_Init(12,0);
+	USART_InterruptEnable(0);
 	OCR1B = 80;
+	
+	TCCR1B |=1<<CS10|1<<WGM12;
+	TIMSK|=1<<OCIE1A;
+	OCR1A=32000;
+	
 	while(1)
 	{		
 	}
+return 0;
 }
+   
+ISR(TIMER1_COMPA_vect)
+{EEPROM_write(0x0A,tempo);
+}	
